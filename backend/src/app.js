@@ -1,15 +1,15 @@
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
+const authRoutes = require("./routes/auth.routes");
 
-const app = express(); // 👈 THIS IS CRITICAL
+const app = express(); 
 
-// Global middlewares
 app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
+app.use("/api/auth", authRoutes);
 
-// Health check route
 app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
@@ -17,4 +17,4 @@ app.get("/", (req, res) => {
   });
 });
 
-module.exports = app; // 👈 THIS IS CRITICAL
+module.exports = app; 
