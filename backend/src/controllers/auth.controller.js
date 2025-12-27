@@ -38,24 +38,29 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    const { email, password } = req.body; // ✅ DEFINE email here
+    // 1️⃣ Extract credentials
+    const { email, password } = req.body;
 
+    // 2️⃣ Find user by email
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
+    // 3️⃣ Compare passwords
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
+    // 4️⃣ Generate JWT
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
 
+    // 5️⃣ Send response
     res.status(200).json({
       success: true,
       token,
@@ -69,4 +74,5 @@ exports.login = async (req, res) => {
     });
   }
 };
+
 

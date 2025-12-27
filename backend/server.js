@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-const app = require("./src/app");
+require("dotenv").config();   // ✅ LOAD ENV FIRST
 
-dotenv.config();
+const app = require("./src/app"); // ✅ THEN load app
 
 const PORT = process.env.PORT || 5000;
 
