@@ -1,28 +1,22 @@
-const express =  require ("express");
+const express = require("express");
 const router = express.Router();
 
-const {protect} = require("../middleware/auth.middleware");
+const { protect } = require("../middleware/auth.middleware");
 const { authorizeRoles } = require("../middleware/role.middleware");
+const {
+  createEvent,
+  getAllEvents,
+} = require("../controllers/event.controller");
 
+// ADMIN & ORGANIZER
 router.post(
-    "/create",
-    protect,
-    authorizeRoles("ADMIN", "ORGANIZER"),
-    (req, res) => {
-        res.status(201).json({
-            success: true,
-            message: "Event created successfully",
-            createdBy: req.user.role,
-        });
-    }
+  "/create",
+  protect,
+  authorizeRoles("ADMIN", "ORGANIZER"),
+  createEvent
 );
 
-router.get("/all", protect, (req, res) => {
-    res.status(200).json({
-        success: true,
-        message: "Events fetched",
-        role: res.user.role,
-    });
-});
+// All logged-in users
+router.get("/all", protect, getAllEvents);
 
 module.exports = router;
